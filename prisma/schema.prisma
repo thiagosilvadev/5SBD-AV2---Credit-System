@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model business {
+  id   String @id @default(uuid())
+  name String
+  cnpj String
+
+  Employee Employee[]
+}
+
+model Employee {
+  id         String     @id @default(uuid())
+  name       String
+  cpf        String
+  businessId String
+  salary     Float
+  business   business   @relation(fields: [businessId], references: [id])
+  contracts  Contract[]
+}
+
+model Seller {
+  id        String     @id @default(uuid())
+  name      String
+  contracts Contract[]
+}
+
+model Contract {
+  id                String    @id @default(uuid())
+  value             Float
+  payValue          Float
+  totalInstallments Int
+  sellerId          String
+  seller            Seller    @relation(fields: [sellerId], references: [id])
+  employeeId        String
+  employee          Employee  @relation(fields: [employeeId], references: [id])
+  garanty           Garanty[]
+  Payment           Payment[]
+}
+
+model Garanty {
+  id          String   @id @default(uuid())
+  description String
+  value       Float
+  contractId  String
+  contract    Contract @relation(fields: [contractId], references: [id])
+}
+
+model Payment {
+  id         String    @id @default(uuid())
+  value      Float
+  dueDate    DateTime
+  paidDate   DateTime?
+  contractId String
+  contract   Contract  @relation(fields: [contractId], references: [id])
+}

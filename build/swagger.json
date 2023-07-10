@@ -1,0 +1,191 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"BusinessResponse": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"id": {
+						"type": "string"
+					},
+					"cnpj": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"id",
+					"cnpj"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BusinessRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"cnpj": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"cnpj"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EntityMapperPayload": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"createdAt",
+					"updatedAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "cooperativa-a-grana",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/business": {
+			"post": {
+				"operationId": "CreateBusiness",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/BusinessResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/BusinessRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/loan": {
+			"post": {
+				"operationId": "CreateLoan",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntityMapperPayload"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {}
+						}
+					}
+				}
+			}
+		},
+		"/loan/comission/{sellerId}": {
+			"get": {
+				"operationId": "CalculateComission",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"comissionInCurrency": {
+											"type": "string"
+										},
+										"comission": {
+											"type": "number",
+											"format": "double"
+										}
+									},
+									"required": [
+										"comissionInCurrency",
+										"comission"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "sellerId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
